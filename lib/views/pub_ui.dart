@@ -2,6 +2,7 @@
 import 'package:flutter_thai_hotline_app/models/hot_line.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PubUI extends StatefulWidget {
   const PubUI({super.key});
@@ -11,6 +12,12 @@ class PubUI extends StatefulWidget {
 }
 
 class _PubUIState extends State<PubUI> {
+  //method โทร
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final launchUri = Uri(scheme: 'tel', path: phoneNumber);
+    await launchUrl(launchUri);
+  }
+
   List imagesCrs = [
     'assets/images/pubutil/pub_0.png',
   ];
@@ -71,27 +78,6 @@ class _PubUIState extends State<PubUI> {
       body: Center(
         child: Column(
           children: [
-            //ส่วนของ carousel imagesCrs
-            // CarouselSlider.builder(
-            //   itemCount: imagesCrs.length,
-            //   options: CarouselOptions(
-            //     height: MediaQuery.of(context).size.height * 0.35,
-            //     autoPlay: true,
-            //     autoPlayInterval: Duration(seconds: 2),
-            //   ),
-            //   itemBuilder: (BuildContext context, int index, int realIndex) {
-            //     return Container(
-            //       margin: EdgeInsets.all(10.0),
-            //       decoration: BoxDecoration(
-            //         image: DecorationImage(
-            //           image: AssetImage(imagesCrs[index]),
-            //           fit: BoxFit.cover,
-            //         ),
-            //         borderRadius: BorderRadius.circular(10.0),
-            //       ),
-            //     );
-            //   },
-            // ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.03,
             ),
@@ -176,10 +162,15 @@ class _PubUIState extends State<PubUI> {
                           color: const Color.fromARGB(255, 0, 0, 0),
                         ),
                       ),
-                      trailing: Icon(
-                        Icons.phone_outlined,
-                        color: Color.fromARGB(255, 36, 36, 36),
-                        size: 28,
+                      trailing: IconButton(
+                        onPressed: () {
+                          _makePhoneCall(Hotdata[index].phone);
+                        },
+                        icon: const Icon(
+                          Icons.phone_outlined,
+                          color: Color.fromARGB(255, 36, 36, 36),
+                          size: 28,
+                        ),
                       ),
                     ),
                   );
